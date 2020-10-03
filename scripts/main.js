@@ -50,7 +50,6 @@ subscribe = () => {
           return registration.pushManager.subscribe(subscribeOptions)
         })
       .then(pushSubscription => {
-          console.log('Received PushSubscription: ', JSON.stringify(pushSubscription))
           pushSubscriptionObject = pushSubscription.toJSON()
           requestSubscription = {
             service_endpoint: pushSubscriptionObject.endpoint,
