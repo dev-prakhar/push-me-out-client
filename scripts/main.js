@@ -3,7 +3,8 @@ setupApplication = () => {
   if(!isValid) return
   
   register()
-  requestPermission()
+  // Not needed because subscribe asks for permission
+  // requestPermission()
   subscribe()
 }
 
@@ -22,6 +23,7 @@ register = () => {
   })
 }
 
+
 requestPermission = () => {
   return new Promise((resolve, reject) => {
       const permissionResult = Notification.requestPermission(result => resolve(result))
@@ -39,7 +41,7 @@ requestPermission = () => {
 
 subscribe = () => {
     return navigator.serviceWorker.register('/scripts/service_worker.js')
-      .then((registration) => {
+      .then(registration => {
           const subscribeOptions = {
             userVisibleOnly: true,
             applicationServerKey: applicationKey()
@@ -47,9 +49,14 @@ subscribe = () => {
 
           return registration.pushManager.subscribe(subscribeOptions)
         })
-      .then((pushSubscription) => {
-          console.log('Received PushSubscription: ', JSON.stringify(pushSubscription))
-          return pushSubscription
+      .then(pushSubscription => {
+          pushSubscriptionObject = pushSubscription.toJSON()
+          requestSubscription = {
+            service_endpoint: pushSubscriptionObject.endpoint,
+            p256dh: pushSubscriptionObject.keys.p256dh,
+            auth: pushSubscriptionObject.keys.auth
+          }
+          addSubscribers(requestSubscription)
         });
 }
 
