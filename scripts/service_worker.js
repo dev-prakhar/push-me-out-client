@@ -1,4 +1,7 @@
 self.addEventListener('push', event => {
-    var title = event.data.text();
-    event.waitUntil(self.registration.showNotification(title));
+    notificationData = event.data.json()
+    title = notificationData.text
+    delete notificationData.text
+    
+    event.waitUntil(self.registration.showNotification(title, notificationData));
   });

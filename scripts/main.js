@@ -6,6 +6,8 @@ setupApplication = () => {
   // Not needed because subscribe asks for permission
   // requestPermission()
   subscribe()
+  
+  fetchNotificationTypes()
 }
 
 validate = () => {
