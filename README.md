@@ -24,3 +24,23 @@ Open `localhost:8000` on your browser and start sending notification to yourself
 ### Requesting Permission
 * When the page is loaded, the application asks for permission for sending push events
 * ![Requesting Permission](images/request_permission.png)
+
+### Play with Notification
+* The tab `Play With Notification` lets you send customised notifications (Notification Customisation happens on backend server)
+* ![Play With Notification](images/play_with_notification_tab.png)
+
+### Trigger Notification
+* Currently, notification is pushed to all the active subscribers
+* Trigger Success Alert is shown once the notification is triggered
+* ![Trigger Notification Success](images/trigger_notification_success.png)
+
+### Notification Types
+* Notification Types are supported from backend (Notification types are fetched on the page load)
+* **Basic Notification**
+* ![Basic Notification](images/simple_notification.png)
+* **Notification With Actions**
+* ![Notification with Actions](images/notification_with_actions.png)
+* **Notification With Image**
+* ![Notification with Image](images/notification_with_image.png)
+
+***
