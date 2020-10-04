@@ -12,18 +12,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="../scripts/main.js"></script>
     <script src="../scripts/secrets.js"></script>
     <script src="../scripts/connector.js"></script>
+    <script src="../scripts/handlers.js"></script>
   </head>
-  <body onload='setupApplication()'>
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    
+  <body onload='setupApplication(); selectTab("intro_tab");'>
+    <nav class="navbar sticky-top navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">
+        Push Me Out
+      </a>
+    </nav>
+
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="#introduction" id='intro_tab' onclick='selectTab("intro_tab")'>Introduction</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#play_with_notification" id='play_tab' onclick="selectTab('play_tab')">Play with Notification</a>
+      </li>
+    </ul>
+
+    <div class="card" id='introduction'>
+      <div class="card-body">
+        <p class="card-text">
+          <strong>Push me out</strong> is a very basic prototype that sends push notification to a browser using the Push Service and Service Worker. This application lets you send customised notification to subscribers.
+
+          The application is divided into two systems:
+          <ul>
+            <li>Client -- (Javascript, jQuery, Bootstrap)</li>
+            <li>Server -- (Python, Django, Postgres)</li>
+          </ul>
+        </p>
+        <p class="card-text">
+          <div class="card">
+            <h5 class="card-header">Client</h5>
+            <div class="card-body">
+              <p class="card-text">
+                <ul>
+                  <li>Generates The Push Service's endpoint and sends the credentials to the server</li>
+                  <li>Handles the push events when the server sends the push events</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h5 class="card-header">Server</h5>
+            <div class="card-body">
+              <p class="card-text">
+                <ul>
+                  <li>Stores the subscription info (push service endpoint, auth keys)</li>
+                  <li>Triggers the push event to Push Service by calling the push service endpoint</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h5 class="card-header">Application Flow</h5>
+            <div class="card-body">
+              <h5 class="card-title">Boostraping Application</h5>
+              <p class="card-text">
+                <ul>
+                  <li>Registers the Service Worker when the page is loaded</li>
+                  <li>Once the service worker is registered successfully, the client subscribes for push event</li>
+                  <li>At this point, if the permission for receiving push events is not granted, the browser asks for the permission</li>
+                  <li>Once the permission is granted, push service endpoint is created and sent to the backend server</li>
+                </ul>
+              </p>
+
+              <h5 class="card-title">Storing Subscriber</h5>
+              <p class="card-text">
+                <ul>
+                  <li>The server recieves the push service credentials (push service endpoint, auth keys)</li>
+                  <li>If these credentials are not already present, server stores them in a persistent storage</li>
+                  <li>If the credentials are already stored with the server, server throws a 400 bad request message</li>
+                </ul>
+              </p>
+
+              <h5 class="card-title">Triggering Notification</h5>
+              <p class="card-text">
+                <ul>
+                  <li>For triggering notification, the client hits the server endpoint that triggers the notification</li>
+                  <li>If the client sends the subscriber_id, then only that subscriber is notified</li>
+                  <li>If no subscriber_id is sent to the server, all the subscribers are notified</li>
+                  <li>After receiving the request, server registers the request and fires an asynchronous task to trigger push event</li>
+                  <li>After firing an asynchronous task, server returns the response if the server successfully registers the request</li>
+                </ul>
+              </p>
+
+              <h5 class="card-title">Receiving Notification</h5>
+              <p class="card-text">
+                <ul>
+                  <li>After the server triggers the push event, the push service redirects the event to the appropriate client</li>
+                  <li>Service Worker listens to the push event, once the push event is received by the browser, the service worker is invoked</li>
+                  <li>Service Worker then shows the notification according to the data sent by the server</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+        </p>
+      </div>
+    </div>
+
+    <div class="card" id='play_with_notification'>
+      <div class="alert alert-success" role="alert" id='trigger_success' hidden>
+        Notification Successfully Triggered!
+      </div>
+
+      <div class="card-body">
+        <h5 class="card-title">Trigger Notification to All Subscribers</h5>
+        <p class="card-text">
+          <button type="button" class="btn btn-primary" onclick="broadcastNotification()">Trigger Notification</button>
+        </p>
+      </div>
+    </div>
+
   </body>
 </html>
