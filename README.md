@@ -18,3 +18,9 @@ APPLICATION_KEY = {generated_public_key}
 * Save the **Private Key** for application server
 
 Open `localhost:8000` on your browser and start sending notification to yourself.
+
+# Demo
+
+### Requesting Permission
+* When the page is loaded, the application asks for permission for sending push events
+* ![Requesting Permission](..images/request_permission.png)
