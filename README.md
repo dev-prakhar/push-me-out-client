@@ -23,4 +23,4 @@ Open `localhost:8000` on your browser and start sending notification to yourself
 
 ### Requesting Permission
 * When the page is loaded, the application asks for permission for sending push events
-* ![Requesting Permission](..images/request_permission.png)
+* ![Requesting Permission](images/request_permission.png)
