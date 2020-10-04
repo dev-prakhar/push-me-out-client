@@ -1,3 +1,7 @@
 addSubscribers = (data) => {
-  $.post('http://localhost:8001/notifier/subscribers/', data).done(response => console.log(response))
+  return $.post('http://localhost:8001/notifier/subscribers/', data).done(response => response)
+}
+
+triggerNotification = (data) => {
+  return $.post('http://localhost:8001/notifier/trigger/', data).done(response => response)
 }
