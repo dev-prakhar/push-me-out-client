@@ -1,6 +1,8 @@
 # Push me Out Client
 JS Client for Push me out
 
+[Click here](https://github.com/dev-prakhar/push-me-out-server) to go to `push me out` server repo.
+
 # Steps to setup the client
 
 ### Start http-server
